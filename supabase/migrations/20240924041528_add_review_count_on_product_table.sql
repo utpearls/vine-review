@@ -1,0 +1,1 @@
+ALTER TABLE products ADD COLUMN review_count INTEGER DEFAULT 0;
