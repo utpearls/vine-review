@@ -3,15 +3,17 @@ import supabase from "@/supabase";
 import { createProductType } from "@/types/product";
 import { StatusCodes } from "http-status-codes";
 import { createReviewType } from "@/types/review";
+import { useParams } from "next/navigation";
 
 const useReviews = () => {
-  const [products, setProducts] = useState<any>([]);
+  const params = useParams();
+  const [reviews, setReviews] = useState<any>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [status, setStatus] = useState<number>();
   const tableName = "reviews";
-
+  const productId = Number(params.productid);
   // Function to fetch all products
   const fetchReviews = async () => {
     setLoading(true);
@@ -28,9 +30,33 @@ const useReviews = () => {
 
     if (error) {
       setError(error.message);
-      setProducts([]);
+      setReviews([]);
     } else {
-      setProducts(data);
+      setReviews(data);
+    }
+
+    setLoading(false);
+  };
+
+  const fetchReviewsByProductId = async () => {
+    setLoading(true);
+    setError(null);
+
+    const { data, error, status } = await supabase
+      .from(tableName)
+      .select("*")
+      .eq("product_id", productId)
+      .order("id", {
+        ascending: false,
+      });
+
+    setStatus(status);
+
+    if (error) {
+      setError(error.message);
+      setReviews([]);
+    } else {
+      setReviews(data);
     }
 
     setLoading(false);
@@ -89,7 +115,7 @@ const useReviews = () => {
     if (error) {
       setError(error.message);
     } else {
-      setProducts((prev: any) =>
+      setReviews((prev: any) =>
         prev.map((product: any) =>
           product.id === id ? { ...product, ...updatedProduct } : product
         )
@@ -118,17 +144,22 @@ const useReviews = () => {
 
   // Fetch products on mount
   useEffect(() => {
-    fetchReviews();
+    if (productId) {
+      fetchReviewsByProductId();
+    } else {
+      fetchReviews();
+    }
   }, []);
 
   return {
-    products,
+    reviews,
     loading,
     error,
     createReview,
     updateReview,
     deleteReview,
     getReviewById,
+    fetchReviewsByProductId,
     success,
     status,
   };

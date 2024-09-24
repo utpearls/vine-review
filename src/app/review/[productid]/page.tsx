@@ -23,10 +23,10 @@ import ImageLoader from "@/components/imageloader";
 import { submitReview } from "@/validations/submitReview";
 import useReviews from "@/hooks/reviews";
 import RatingStar from "@/components/rating";
+import ReviewList from "@/components/reviewList";
 
 const ReviewPage = () => {
   const searchParams = useParams();
-  const params = useRouter();
   const { getProductById, success, loading } = useProducts();
   const { createReview } = useReviews();
   const [productDetail, setProductDetail] = useState<{
@@ -38,6 +38,7 @@ const ReviewPage = () => {
   const [rating, setRating] = useState(1);
   const { productid } = searchParams;
   const productId = Number(productid);
+  const [refetchReview, setRefetchReview] = useState(false);
 
   useEffect(() => {
     const getProduct = async () => {
@@ -61,6 +62,8 @@ const ReviewPage = () => {
       product_id: productId,
       rating: rating,
     });
+
+    setRefetchReview(true);
   };
 
   return (
@@ -101,7 +104,7 @@ const ReviewPage = () => {
                   <Link href="/"> Back</Link>
                 </Typography>
               </Stack>
-              <Stack gap={2} pb={2}>
+              <Stack gap={4} pb={2}>
                 <Typography>
                   S simply dummy text of the printing and typesetting industry.
                   Lorem Ipsum has been the industry's standard dummy text ever
@@ -114,7 +117,7 @@ const ReviewPage = () => {
                 <Typography variant="h6">Place your review </Typography>
               </Stack>
 
-              <Stack gap={2}>
+              <Stack gap={2} mb={4}>
                 <RatingStar setRating={setRating} />
 
                 <Formik
@@ -174,6 +177,7 @@ const ReviewPage = () => {
                   )}
                 </Formik>
               </Stack>
+              <ReviewList refetch={refetchReview} />
             </Grid2>
 
             {/* Second grid with image */}

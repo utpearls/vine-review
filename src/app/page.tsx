@@ -35,6 +35,17 @@ export default function Home() {
       </Stack>
 
       <Grid2 container spacing={2} gap={2} justifyContent="flex-start">
+        <Grid item xs={12} sm={6} md={4}>
+          <Link href="/my">
+            <Image
+              src="https://img.freepik.com/free-vector/green-cross-geometric-shape-vector_53876-168849.jpg"
+              alt="sadf"
+              height={200}
+              width={200}
+            />
+          </Link>
+        </Grid>
+
         {products.map((item: any, index: number) => (
           <Grid item xs={12} sm={6} md={4} key={item.title || index}>
             <ImageLoader path={item.image_path} />
@@ -51,17 +62,6 @@ export default function Home() {
             </Stack>
           </Grid>
         ))}
-
-        <Grid item xs={12} sm={6} md={4}>
-          <Link href="/my">
-            <Image
-              src="https://img.freepik.com/free-vector/green-cross-geometric-shape-vector_53876-168849.jpg"
-              alt="sadf"
-              height={200}
-              width={200}
-            />
-          </Link>
-        </Grid>
       </Grid2>
     </Container>
   );

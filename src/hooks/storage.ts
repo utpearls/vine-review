@@ -48,6 +48,7 @@ const useFileUpload = () => {
   };
 
   const getSingleFile = async (path: string) => {
+    setUploading(true);
     const { data, error } = await supabase.storage
       .from(bucketName)
       .createSignedUrl(path, 60 * 60); // URL valid for 1 hour (3600 seconds)
@@ -56,6 +57,7 @@ const useFileUpload = () => {
       setError(error.message);
     }
 
+    setUploading(false);
     return data?.signedUrl || null;
   };
 

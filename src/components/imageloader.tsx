@@ -5,7 +5,7 @@ import React, { useState, useEffect } from "react";
 
 const ImageLoader = ({ path }: { path: string }) => {
   const [imageUrl, setImageUrl] = useState<string | null>("");
-  const { getSingleFile } = useFileUpload();
+  const { getSingleFile, loading } = useFileUpload();
 
   useEffect(() => {
     const fetchImageUrl = async () => {
@@ -16,14 +16,18 @@ const ImageLoader = ({ path }: { path: string }) => {
     fetchImageUrl(); // Fetch the image URL when the component mounts
   }, [path]); // Run effect whenever the path changes
 
+  if (loading) {
+    return <Skeleton variant="rectangular" width={210} height={250} />;
+  }
+
   return (
-    <div>
+    <>
       {imageUrl ? (
         <Image alt="heloo 123" height={250} width={250} src={imageUrl} />
       ) : (
         <Skeleton variant="rectangular" width={210} height={250} />
       )}
-    </div>
+    </>
   );
 };
 
