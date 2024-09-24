@@ -22,7 +22,9 @@ const ReviewList = ({ refetch }: { refetch: boolean }) => {
       {reviews.map((item: any) => (
         <Stack gap={1}>
           <RatingReadOnly value={item.rating} />
-          <Typography sx={{ fontWeight: "bold" }}>{item.title}</Typography>
+          <Typography sx={{ fontWeight: "bold" }} lineHeight="1.2">
+            {item.title}
+          </Typography>
           <Typography>{item.description}</Typography>
           <Divider />
         </Stack>
