@@ -31,7 +31,9 @@ const Header = () => {
               </>
             ) : (
               <>
-                <Button onClick={goToLogin}>Login</Button>
+                <Button variant="contained" onClick={goToLogin}>
+                  Login
+                </Button>
               </>
             )}
           </Stack>
